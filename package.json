@@ -1,0 +1,52 @@
+{
+  "name": "middleware-supertest",
+  "description": "Testing Express.js RequestHandler middlewares both on server-side and client-side",
+  "version": "0.8.0",
+  "author": "Yusuke Kawasaki <u-suke@kawa.net>",
+  "contributors": [
+    "Yusuke Kawasaki <u-suke@kawa.net>"
+  ],
+  "dependencies": {
+    "express": "^4",
+    "express-intercept": "github:kawanet/express-intercept",
+    "supertest": "^4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.4",
+    "@types/supertest": "^2.0.9",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "types/middleware-supertest.d.ts",
+    "lib/"
+  ],
+  "homepage": "https://github.com/kawanet/middleware-supertest#readme",
+  "keywords": [
+    "assert",
+    "expressjs",
+    "middleware",
+    "supertest",
+    "test"
+  ],
+  "license": "MIT",
+  "main": "lib/middleware-supertest.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawanet/middleware-supertest.git"
+  },
+  "scripts": {
+    "build": "npm run build-lib && npm run build-types",
+    "build-lib": "./node_modules/.bin/tsc -p .",
+    "build-types": "./node_modules/.bin/tsc -p types",
+    "fixpack": "fixpack",
+    "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "test": "npm run mocha",
+    "tsc-watch": "tsc --watch"
+  },
+  "typings": "./types/middleware-supertest.d.ts"
+}
