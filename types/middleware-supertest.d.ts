@@ -15,19 +15,19 @@ export declare class MWSuperTest {
     /**
      * defines a test function to test the response body as a `string` on server-side.
      */
-    getString(test: (str: string) => (any | Promise<any>)): this;
+    getString(checker: (str: string) => (any | Promise<any>)): this;
     /**
      * defines a test function to test the response body as a `Buffer` on server-side.
      */
-    getBuffer(test: (buf: Buffer) => (any | Promise<any>)): this;
+    getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this;
     /**
      * defines a test function to test the response object aka `res` on server-side.
      */
-    getRequest(test: (req: Request) => (any | Promise<any>)): this;
+    getRequest(checker: (req: Request) => (any | Promise<any>)): this;
     /**
      * defines a test function to test the request object aka `req` on server-side.
      */
-    getResponse(test: (res: Response) => (any | Promise<any>)): this;
+    getResponse(checker: (res: Response) => (any | Promise<any>)): this;
     /**
      * perform a HTTP `DELETE` request and returns a SuperTest object to continue tests on client-side.
      */
