@@ -51,6 +51,7 @@ for more detail.
 ## SEE ALSO
 
 - https://github.com/kawanet/express-intercept
+- https://github.com/kawanet/middleware-supertest
 - https://github.com/visionmedia/supertest
 
 ## LICENSE
