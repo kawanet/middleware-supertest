@@ -2,7 +2,7 @@
 
 Testing Express.js RequestHandler middlewares both on server-side and client-side
 
-![Node.js CI](https://github.com/kawanet/middleware-supertest/workflows/Node.js%20CI/badge.svg?branch=master)
+[![Node.js CI](https://github.com/kawanet/middleware-supertest/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/middleware-supertest/actions/)
 [![npm version](https://badge.fury.io/js/middleware-supertest.svg)](https://www.npmjs.com/package/middleware-supertest)
 
 ## SYNOPSIS
@@ -44,9 +44,9 @@ describe("mwsupertest", async () => {
 
 ## METHODS
 
-See TypeScript definition
+See TypeScript declaration
 [middleware-supertest.d.ts](https://github.com/kawanet/middleware-supertest/blob/master/types/middleware-supertest.d.ts)
-for detail.
+for more detail.
 
 ## SEE ALSO
 
