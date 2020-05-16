@@ -2,6 +2,7 @@
 
 Testing Express.js RequestHandler middlewares both on server-side and client-side
 
+![Node.js CI](https://github.com/kawanet/middleware-supertest/workflows/Node.js%20CI/badge.svg?branch=master)
 [![npm version](https://badge.fury.io/js/middleware-supertest.svg)](https://www.npmjs.com/package/middleware-supertest)
 
 ## SYNOPSIS
@@ -26,17 +27,17 @@ app.use((req, res) => {
 describe("mwsupertest", async () => {
     it("/home", async () => {
         await mwsupertest(app)
-            .getString(str => assert.equal(str, "OK"))
-            .getBuffer(buf => assert.equal(buf.length, 2))
+            .getRequest(req => assert.equal(req.path, "/home"))
             .getResponse(res => assert.equal(res.statusCode, 200))
             .getResponse(res => assert.equal(res.getHeader("x-foo"), "FOO"))
-            .getRequest(req => assert.equal(req.path, "/home"))
+            .getString(str => assert.equal(str, "OK"))
+            .getBuffer(buf => assert.equal(buf.length, 2))
             // abobe tests runs on server-side
             .get("/home")
             // below tests runs on client-side
-            .expect(200)
-            .expect("x-foo", "FOO")
-            .expect("OK");
+            .expect(res => assert.equal(res.status, 200))
+            .expect(res => assert.equal(res.header["x-foo"], "FOO"))
+            .expect(res => assert.equal(res.text, "OK"));
     });
 })
 ```

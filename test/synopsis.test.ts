@@ -26,16 +26,16 @@ app.use((req: Request, res: Response) => {
 describe(TITLE, async () => {
     it("/home", async () => {
         await mwsupertest(app)
-            .getString(str => assert.equal(str, "OK"))
-            .getBuffer(buf => assert.equal(buf.length, 2))
+            .getRequest(req => assert.equal(req.path, "/home"))
             .getResponse(res => assert.equal(res.statusCode, 200))
             .getResponse(res => assert.equal(res.getHeader("x-foo"), "FOO"))
-            .getRequest(req => assert.equal(req.path, "/home"))
+            .getString(str => assert.equal(str, "OK"))
+            .getBuffer(buf => assert.equal(buf.length, 2))
             // abobe tests runs on server-side
             .get("/home")
             // below tests runs on client-side
-            .expect(200)
-            .expect("x-foo", "FOO")
-            .expect("OK");
+            .expect(res => assert.equal(res.status, 200))
+            .expect(res => assert.equal(res.header["x-foo"], "FOO"))
+            .expect(res => assert.equal(res.text, "OK"));
     });
 })
