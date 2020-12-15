@@ -6,12 +6,12 @@
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitAny": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "removeComments": true,
-    "skipLibCheck": true,
+    "removeComments": false,
+    "skipLibCheck": false,
     "strictNullChecks": false,
     "target": "ES2018",
     "types": [
