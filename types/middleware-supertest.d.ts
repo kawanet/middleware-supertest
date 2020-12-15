@@ -6,11 +6,11 @@ export declare const mwsupertest: (app: RequestHandler) => MWSuperTest;
  * Testing Express.js RequestHandler middlewares both on server-side and client-side
  */
 export declare class MWSuperTest {
-    private app;
-    private _agent;
-    private handlers;
+
+
+
     constructor(app: RequestHandler);
-    private agent;
+
     use(mw: RequestHandler): this;
     /**
      * defines a test function to test the response body as a `string` on server-side.

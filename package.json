@@ -42,7 +42,7 @@
   "scripts": {
     "build": "npm run build-lib && npm run build-types",
     "build-lib": "./node_modules/.bin/tsc -p .",
-    "build-types": "./node_modules/.bin/tsc -p types",
+    "build-types": "./node_modules/.bin/tsc -p types && perl -i -pe 's/^ *private .*$//' types/*.d.ts",
     "fixpack": "fixpack",
     "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
     "test": "npm run mocha",
