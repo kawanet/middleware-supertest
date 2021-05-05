@@ -11,7 +11,7 @@ export const mwsupertest = (app: RequestHandler) => new MWSuperTest(app);
  * Testing Express.js RequestHandler middlewares both on server-side and client-side
  */
 
-class MWSuperTest {
+export class MWSuperTest {
     private _agent: supertest.SuperTest<any>;
     private handlers = express.Router();
 

@@ -8,7 +8,7 @@ export declare function mwsupertest(app: RequestHandler): MWSuperTest;
 /**
  * Testing Express.js RequestHandler middlewares both on server-side and client-side
  */
-declare class MWSuperTest {
+export declare class MWSuperTest {
     constructor(app: RequestHandler);
 
     use(mw: RequestHandler): this;
