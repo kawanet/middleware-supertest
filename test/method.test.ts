@@ -2,7 +2,7 @@
 
 import * as express from "express";
 
-import {mwsupertest} from "../lib/middleware-supertest";
+import {mwsupertest} from "../";
 import {RequestHandler} from "express";
 
 const TITLE = __filename.split("/").pop();

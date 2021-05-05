@@ -4,7 +4,7 @@ import {strict as assert} from "assert";
 import * as express from "express";
 import {RequestHandler} from "express";
 
-import {mwsupertest} from "../lib/middleware-supertest";
+import {mwsupertest} from "../";
 
 const TITLE = __filename.split("/").pop();
 

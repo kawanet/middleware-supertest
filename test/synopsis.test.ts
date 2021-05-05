@@ -1,7 +1,7 @@
 #!/usr/bin/env mocha -R spec
 
 import {Request, Response} from "express";
-import {mwsupertest} from "../lib/middleware-supertest";
+import {mwsupertest} from "../";
 
 const TITLE = __filename.split("/").pop();
 
