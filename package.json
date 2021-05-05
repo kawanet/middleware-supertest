@@ -1,7 +1,7 @@
 {
   "name": "middleware-supertest",
   "description": "Testing Express.js RequestHandler middlewares both on server-side and client-side",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "contributors": [
     "Yusuke Kawasaki <u-suke@kawa.net>"
