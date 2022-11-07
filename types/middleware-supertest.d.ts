@@ -3,14 +3,12 @@
 import type {Request, RequestHandler, Response} from "express";
 import type * as supertest from "supertest";
 
-export declare function mwsupertest(app: RequestHandler): MWSuperTest;
+export const mwsupertest: (app: RequestHandler) => MWSuperTest;
 
 /**
  * Testing Express.js RequestHandler middlewares both on server-side and client-side
  */
-export declare class MWSuperTest {
-    constructor(app: RequestHandler);
-
+interface MWSuperTest {
     use(mw: RequestHandler): this;
 
     /**

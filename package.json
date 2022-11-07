@@ -40,9 +40,10 @@
     "url": "git+https://github.com/kawanet/middleware-supertest.git"
   },
   "scripts": {
-    "build": "./node_modules/.bin/tsc -p . && ./node_modules/.bin/tsc types/*.d.ts",
+    "build": "./node_modules/.bin/tsc -p .",
     "fixpack": "fixpack",
     "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "prepack": "npm run build && npm test",
     "test": "npm run mocha",
     "tsc-watch": "tsc --watch"
   },
