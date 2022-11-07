@@ -4,14 +4,14 @@
     "./test"
   ],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "removeComments": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "strictNullChecks": false,
     "target": "ES2018",
     "types": [
