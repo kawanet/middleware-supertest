@@ -14,7 +14,7 @@ export const mwsupertest: typeof types.mwsupertest = app => new MWSuperTest(app)
  */
 
 class MWSuperTest implements types.MWSuperTest {
-    private _agent: supertest.Agent
+    private _agent?: supertest.Agent
     private chain: RequestHandler[] = []
     private readonly app: Express
 
@@ -34,10 +34,7 @@ class MWSuperTest implements types.MWSuperTest {
         const stack = [...this.chain]
         const composed = (req: IncomingMessage, res: ServerResponse) => {
             runChain(stack, req as Request, res as Response, (err?: any) => {
-                // Fallback when neither the chain nor the app produced a
-                // response. This mirrors the minimal behaviour of the
-                // `finalhandler` package that Express attaches when you call
-                // `app.listen()` (404 for unhandled, 500 for surfaced errors).
+                // Stop if the pre-app chain already completed the response.
                 if (res.writableEnded) return
                 if (err) {
                     res.statusCode = (err && err.status) || 500
@@ -57,7 +54,7 @@ class MWSuperTest implements types.MWSuperTest {
 
     private add(mw: RequestHandler): this {
         this.chain.push(mw)
-        this._agent = null
+        this._agent = undefined
         return this
     }
 
@@ -106,7 +103,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     delete(url: string) {
-        return wrapRequest(this.agent().delete.apply(this.agent, arguments as any))
+        return wrapRequest(this.agent().delete(url))
     }
 
     /**
@@ -114,7 +111,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     get(url: string) {
-        return wrapRequest(this.agent().get.apply(this.agent, arguments as any))
+        return wrapRequest(this.agent().get(url))
     }
 
     /**
@@ -122,7 +119,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     head(url: string) {
-        return wrapRequest(this.agent().head.apply(this.agent, arguments as any))
+        return wrapRequest(this.agent().head(url))
     }
 
     /**
@@ -130,7 +127,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     post(url: string) {
-        return wrapRequest(this.agent().post.apply(this.agent, arguments as any))
+        return wrapRequest(this.agent().post(url))
     }
 
     /**
@@ -138,7 +135,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     put(url: string) {
-        return wrapRequest(this.agent().put.apply(this.agent, arguments as any))
+        return wrapRequest(this.agent().put(url))
     }
 }
 
