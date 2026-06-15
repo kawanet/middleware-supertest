@@ -103,7 +103,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     delete(url: string) {
-        return wrapRequest(this.agent().delete(url))
+        return wrapRequest(this.agent().delete.apply(this.agent(), arguments as any))
     }
 
     /**
@@ -111,7 +111,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     get(url: string) {
-        return wrapRequest(this.agent().get(url))
+        return wrapRequest(this.agent().get.apply(this.agent(), arguments as any))
     }
 
     /**
@@ -119,7 +119,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     head(url: string) {
-        return wrapRequest(this.agent().head(url))
+        return wrapRequest(this.agent().head.apply(this.agent(), arguments as any))
     }
 
     /**
@@ -127,7 +127,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     post(url: string) {
-        return wrapRequest(this.agent().post(url))
+        return wrapRequest(this.agent().post.apply(this.agent(), arguments as any))
     }
 
     /**
@@ -135,7 +135,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     put(url: string) {
-        return wrapRequest(this.agent().put(url))
+        return wrapRequest(this.agent().put.apply(this.agent(), arguments as any))
     }
 }
 
