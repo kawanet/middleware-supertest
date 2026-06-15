@@ -1,10 +1,16 @@
 /// <reference types="node" />
 
-import type {NextHandleFunction} from "connect"
 import type {Express, Request, Response} from "express"
+import type {IncomingMessage, ServerResponse} from "node:http"
 import type * as supertest from "supertest"
 
 export {} // external module indicator
+
+export type NextHandleFunction = (
+    req: IncomingMessage,
+    res: ServerResponse,
+    next: (err?: any) => void,
+) => void
 
 export const mwsupertest: (app: Express) => MWSuperTest
 

@@ -1,6 +1,5 @@
 // middleware-supertest.ts
 
-import type {NextHandleFunction} from "connect"
 import type {Express, Request, RequestHandler, Response} from "express"
 import {responseHandler} from "express-intercept"
 import type * as types from "middleware-supertest"
@@ -52,7 +51,7 @@ class MWSuperTest implements types.MWSuperTest {
         return (this._agent = supertest(composed))
     }
 
-    use(mw: NextHandleFunction): this {
+    use(mw: types.NextHandleFunction): this {
         return this.add(mw)
     }
 
