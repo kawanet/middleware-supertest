@@ -1,24 +1,24 @@
-import {strict as assert} from "node:assert";
-import {describe, it} from "node:test";
-import type {Request, Response} from "express";
+import {strict as assert} from "node:assert"
+import {describe, it} from "node:test"
+import type {Request, Response} from "express"
 
-import {mwsupertest} from "../../lib/middleware-supertest.ts";
-import type {ExpressModule} from "./util.ts";
+import {mwsupertest} from "../../lib/middleware-supertest.ts"
+import type {ExpressModule} from "./util.ts"
 
 ////////////////////////////////////////////////
 
 // const {mwsupertest} = require("middleware-supertest");
 
 export function runSynopsisTests(label: string, express: ExpressModule): void {
-    const app = express();
+    const app = express()
 
     // your Express application
 
     app.use((req: Request, res: Response) => {
-        res.header("x-foo", "FOO");
-        res.status(200);
-        res.send("OK");
-    });
+        res.header("x-foo", "FOO")
+        res.status(200)
+        res.send("OK")
+    })
 
     // your Mocha test
 
@@ -35,7 +35,7 @@ export function runSynopsisTests(label: string, express: ExpressModule): void {
                 // below tests runs on client-side
                 .expect(res => assert.equal(res.status, 200))
                 .expect(res => assert.equal(res.header["x-foo"], "FOO"))
-                .expect(res => assert.equal(res.text, "OK"));
-        });
-    });
+                .expect(res => assert.equal(res.text, "OK"))
+        })
+    })
 }

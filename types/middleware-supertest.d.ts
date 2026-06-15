@@ -1,8 +1,8 @@
 /// <reference types="node" />
 
-import type {IncomingMessage, ServerResponse} from "node:http";
-import type {Express, Request, Response} from "express";
-import type * as supertest from "supertest";
+import type {IncomingMessage, ServerResponse} from "node:http"
+import type {Express, Request, Response} from "express"
+import type * as supertest from "supertest"
 
 export {} // external module indicator
 
@@ -21,9 +21,9 @@ export type NextHandleFunction = (
     req: IncomingMessage,
     res: ServerResponse,
     next: (err?: any) => void,
-) => void;
+) => void
 
-export const mwsupertest: (app: Express) => MWSuperTest;
+export const mwsupertest: (app: Express) => MWSuperTest
 
 /**
  * Test an Express.js `RequestHandler` middleware on both the server side
@@ -37,59 +37,59 @@ export interface MWSuperTest {
      * `ServerResponse`) — see `NextHandleFunction` for why Express extension
      * methods are not available at this point.
      */
-    use(mw: NextHandleFunction): this;
+    use(mw: NextHandleFunction): this
 
     /**
      * Registers a server-side check that runs against the response body
      * decoded as a UTF-8 `string`.
      */
-    getString(checker: (str: string) => (any | Promise<any>)): this;
+    getString(checker: (str: string) => (any | Promise<any>)): this
 
     /**
      * Registers a server-side check that runs against the response body
      * as a raw `Buffer`.
      */
-    getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this;
+    getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this
 
     /**
      * Registers a server-side check that runs against the inbound `req`
      * object once Express has finished routing it.
      */
-    getRequest(checker: (req: Request) => (any | Promise<any>)): this;
+    getRequest(checker: (req: Request) => (any | Promise<any>)): this
 
     /**
      * Registers a server-side check that runs against the outbound `res`
      * object just before the response is flushed to the client.
      */
-    getResponse(checker: (res: Response) => (any | Promise<any>)): this;
+    getResponse(checker: (res: Response) => (any | Promise<any>)): this
 
     /**
      * Performs an HTTP `DELETE` request and returns a SuperTest object
      * so further client-side assertions can chain on.
      */
-    delete(url: string): supertest.Test;
+    delete(url: string): supertest.Test
 
     /**
      * Performs an HTTP `GET` request and returns a SuperTest object so
      * further client-side assertions can chain on.
      */
-    get(url: string): supertest.Test;
+    get(url: string): supertest.Test
 
     /**
      * Performs an HTTP `HEAD` request and returns a SuperTest object so
      * further client-side assertions can chain on.
      */
-    head(url: string): supertest.Test;
+    head(url: string): supertest.Test
 
     /**
      * Performs an HTTP `POST` request and returns a SuperTest object so
      * further client-side assertions can chain on.
      */
-    post(url: string): supertest.Test;
+    post(url: string): supertest.Test
 
     /**
      * Performs an HTTP `PUT` request and returns a SuperTest object so
      * further client-side assertions can chain on.
      */
-    put(url: string): supertest.Test;
+    put(url: string): supertest.Test
 }
