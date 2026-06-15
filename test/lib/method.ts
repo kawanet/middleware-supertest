@@ -1,6 +1,5 @@
 import type {RequestHandler} from "express"
 import {describe, it} from "node:test"
-
 import {mwsupertest} from "../../lib/middleware-supertest.ts"
 import type {ExpressModule} from "./util.ts"
 

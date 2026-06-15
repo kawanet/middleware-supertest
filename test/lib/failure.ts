@@ -1,8 +1,7 @@
 import type {RequestHandler} from "express"
+import type {MWSuperTest} from "middleware-supertest"
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
-
-import type {MWSuperTest} from "middleware-supertest"
 import {mwsupertest} from "../../lib/middleware-supertest.ts"
 import type {ExpressModule} from "./util.ts"
 

@@ -1,14 +1,12 @@
 // Integration tests for the Express 5 line.
 
 import express5 from "express5"
-
-import type {ExpressModule} from "./lib/util.ts"
-
 import {runBasicTests} from "./lib/basic.ts"
 import {runFailureTests} from "./lib/failure.ts"
 import {runMethodTests} from "./lib/method.ts"
 import {runStatusTests} from "./lib/status.ts"
 import {runSynopsisTests} from "./lib/synopsis.ts"
+import type {ExpressModule} from "./lib/util.ts"
 
 const label = "express5"
 
