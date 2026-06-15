@@ -43,6 +43,7 @@ class MWSuperTest implements types.MWSuperTest {
                     res.statusCode = (err && err.status) || 500
                     res.end((err && err.message) || "Internal Server Error")
                 } else {
+                    if (res.headersSent) return
                     this.app(req, res)
                 }
             })
