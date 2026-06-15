@@ -31,8 +31,9 @@ class MWSuperTest implements types.MWSuperTest {
         // so that the runtime contract is just "any callable Express app",
         // which both Express 4 and Express 5 satisfy. The version of Express
         // used by the consumer never enters this module at runtime.
+        const stack = [...this.chain]
         const composed = (req: IncomingMessage, res: ServerResponse) => {
-            runChain(this.chain, req as Request, res as Response, (err?: any) => {
+            runChain(stack, req as Request, res as Response, (err?: any) => {
                 // Fallback when neither the chain nor the app produced a
                 // response. This mirrors the minimal behaviour of the
                 // `finalhandler` package that Express attaches when you call

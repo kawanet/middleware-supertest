@@ -48,5 +48,17 @@ export function runBasicTests(label: string, express: ExpressModule): void {
                 .expect(200)
                 .expect("SUCCESS")
         })
+
+        it("snapshots chain per request", async () => {
+            const testApp = mwsupertest(app)
+            const request = testApp.get("/").expect(200).expect("SUCCESS")
+            let late = false
+            testApp.getString(() => {
+                late = true
+            })
+
+            await request
+            assert.equal(late, false)
+        })
     })
 }
