@@ -1,5 +1,6 @@
 // middleware-supertest.ts
 
+import type {NextHandleFunction} from "connect"
 import type {Express, Request, RequestHandler, Response} from "express"
 import {responseHandler} from "express-intercept"
 import type * as types from "middleware-supertest"
@@ -50,7 +51,11 @@ class MWSuperTest implements types.MWSuperTest {
         return (this._agent = supertest(composed))
     }
 
-    use(mw: RequestHandler): this {
+    use(mw: NextHandleFunction): this {
+        return this.add(mw)
+    }
+
+    private add(mw: RequestHandler): this {
         this.chain.push(mw)
         this._agent = null
         return this
@@ -61,7 +66,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     getString(checker: (str: string) => (any | Promise<any>)): this {
-        return this.use(responseHandler().getString((str, req, res) => {
+        return this.add(responseHandler().getString((str, req, res) => {
             return Promise.resolve(str).then(checker).catch(err => catchError(err, req, res))
         }))
     }
@@ -71,7 +76,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this {
-        return this.use(responseHandler().getBuffer((buf, req, res) => {
+        return this.add(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve(buf).then(checker).catch(err => catchError(err, req, res))
         }))
     }
@@ -81,7 +86,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     getRequest(checker: (req: Request) => (any | Promise<any>)): this {
-        return this.use(responseHandler().getBuffer((buf, req, res) => {
+        return this.add(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(req)).catch(err => catchError(err, req, res))
         }))
     }
@@ -91,7 +96,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     getResponse(checker: (res: Response) => (any | Promise<any>)): this {
-        return this.use(responseHandler().getBuffer((buf, req, res) => {
+        return this.add(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(res)).catch(err => catchError(err, req, res))
         }))
     }

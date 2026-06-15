@@ -1,6 +1,7 @@
 /// <reference types="node" />
 
-import type {Express, Request, RequestHandler, Response} from "express"
+import type {NextHandleFunction} from "connect"
+import type {Express, Request, Response} from "express"
 import type * as supertest from "supertest"
 
 export {} // external module indicator
@@ -15,8 +16,15 @@ export interface MWSuperTest {
     /**
      * Mounts an additional middleware before the handler under test, scoped
      * to the agent built by this `MWSuperTest` instance.
+     *
+     * The middleware runs before the consumer-supplied app handles the
+     * request, so it sees the raw Node `IncomingMessage` / `ServerResponse`,
+     * not the Express-extended `Request` / `Response`. Use Node-standard
+     * APIs here. Express extension methods become available in
+     * `getRequest()` / `getResponse()` callbacks after the app has handled
+     * the same objects in place.
      */
-    use(mw: RequestHandler): this
+    use(mw: NextHandleFunction): this
 
     /**
      * Registers a server-side check that runs against the response body
