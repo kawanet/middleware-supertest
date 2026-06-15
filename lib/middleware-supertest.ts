@@ -31,7 +31,7 @@ class MWSuperTest implements types.MWSuperTest {
         // so that the runtime contract is just "any callable Express app",
         // which both Express 4 and Express 5 satisfy. The version of Express
         // used by the consumer never enters this module at runtime.
-        const stack: types.NextHandleFunction[] = [...this.chain, this.app]
+        const stack: types.NextHandleFunction[] = [...this.chain, this.app as unknown as types.NextHandleFunction]
         // The chain runs handlers against the raw Node objects supertest
         // hands us via `http.createServer`. The consumer's Express app —
         // running as the last entry of the stack — is the one that
@@ -72,7 +72,7 @@ class MWSuperTest implements types.MWSuperTest {
     getString(checker: (str: string) => (any | Promise<any>)): this {
         return this.use(responseHandler().getString((str, req, res) => {
             return Promise.resolve(str).then(checker).catch(err => catchError(err, req, res))
-        }))
+        }) as unknown as types.NextHandleFunction)
     }
 
     /**
@@ -82,7 +82,7 @@ class MWSuperTest implements types.MWSuperTest {
     getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve(buf).then(checker).catch(err => catchError(err, req, res))
-        }))
+        }) as unknown as types.NextHandleFunction)
     }
 
     /**
@@ -92,7 +92,7 @@ class MWSuperTest implements types.MWSuperTest {
     getRequest(checker: (req: Request) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(req)).catch(err => catchError(err, req, res))
-        }))
+        }) as unknown as types.NextHandleFunction)
     }
 
     /**
@@ -102,7 +102,7 @@ class MWSuperTest implements types.MWSuperTest {
     getResponse(checker: (res: Response) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(res)).catch(err => catchError(err, req, res))
-        }))
+        }) as unknown as types.NextHandleFunction)
     }
 
     /**
@@ -110,7 +110,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     delete(url: string) {
-        return wrapRequest(this.agent().delete.apply(this.agent, arguments))
+        return wrapRequest(this.agent().delete.apply(this.agent, arguments as any))
     }
 
     /**
@@ -118,7 +118,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     get(url: string) {
-        return wrapRequest(this.agent().get.apply(this.agent, arguments))
+        return wrapRequest(this.agent().get.apply(this.agent, arguments as any))
     }
 
     /**
@@ -126,7 +126,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     head(url: string) {
-        return wrapRequest(this.agent().head.apply(this.agent, arguments))
+        return wrapRequest(this.agent().head.apply(this.agent, arguments as any))
     }
 
     /**
@@ -134,7 +134,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     post(url: string) {
-        return wrapRequest(this.agent().post.apply(this.agent, arguments))
+        return wrapRequest(this.agent().post.apply(this.agent, arguments as any))
     }
 
     /**
@@ -142,7 +142,7 @@ class MWSuperTest implements types.MWSuperTest {
      */
 
     put(url: string) {
-        return wrapRequest(this.agent().put.apply(this.agent, arguments))
+        return wrapRequest(this.agent().put.apply(this.agent, arguments as any))
     }
 }
 

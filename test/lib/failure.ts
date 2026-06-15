@@ -22,7 +22,7 @@ export function runFailureTests(label: string, express: ExpressModule): void {
 
         function runCase(title: string, testApp: MWSuperTest) {
             it(title, async () => {
-                let error: Error
+                let error: unknown
                 try {
                     await testApp.get("/").expect(500)
                 } catch (e) {
