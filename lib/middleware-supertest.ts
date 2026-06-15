@@ -39,11 +39,11 @@ class MWSuperTest implements types.MWSuperTest {
                 // `finalhandler` package that Express attaches when you call
                 // `app.listen()` (404 for unhandled, 500 for surfaced errors).
                 if (err) {
-                    if (res.headersSent) return
+                    if (res.writableEnded) return
                     res.statusCode = (err && err.status) || 500
                     res.end((err && err.message) || "Internal Server Error")
                 } else {
-                    if (res.headersSent) return
+                    if (res.writableEnded) return
                     this.app(req, res)
                 }
             })
