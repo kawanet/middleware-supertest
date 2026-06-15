@@ -1,6 +1,6 @@
+import type {Request, Response} from "express"
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
-import type {Request, Response} from "express"
 
 import {mwsupertest} from "../../lib/middleware-supertest.ts"
 import type {ExpressModule} from "./util.ts"

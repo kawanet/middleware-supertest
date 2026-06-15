@@ -1,10 +1,10 @@
 // middleware-supertest.ts
 
-import type {IncomingMessage, ServerResponse} from "node:http"
 import type {Express, Request, Response} from "express"
 import {responseHandler} from "express-intercept"
-import supertest from "supertest"
 import type * as types from "middleware-supertest"
+import type {IncomingMessage, ServerResponse} from "node:http"
+import supertest from "supertest"
 
 export const mwsupertest: typeof types.mwsupertest = app => new MWSuperTest(app)
 
