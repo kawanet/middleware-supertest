@@ -1,27 +1,9 @@
 /// <reference types="node" />
 
-import type {Express, Request, Response} from "express"
-import type {IncomingMessage, ServerResponse} from "node:http"
+import type {Express, Request, RequestHandler, Response} from "express"
 import type * as supertest from "supertest"
 
 export {} // external module indicator
-
-/**
- * A bare Connect-style middleware signature, identical in shape to
- * `connect.NextHandleFunction` (defined locally to avoid pulling in
- * `@types/connect` as a direct dependency). `MWSuperTest.use()` runs
- * the middleware before the consumer-supplied Express app extends `req`
- * / `res` with its prototypes, so the handler sees the standard Node
- * `IncomingMessage` / `ServerResponse` here. Express extension methods
- * (`req.path`, `req.header()`, `res.status()`, etc.) become available
- * only inside the `getRequest()` / `getResponse()` checkers, which fire
- * after the consumer's app has decorated the same objects in place.
- */
-export type NextHandleFunction = (
-    req: IncomingMessage,
-    res: ServerResponse,
-    next: (err?: any) => void,
-) => void
 
 export const mwsupertest: (app: Express) => MWSuperTest
 
@@ -32,12 +14,9 @@ export const mwsupertest: (app: Express) => MWSuperTest
 export interface MWSuperTest {
     /**
      * Mounts an additional middleware before the handler under test, scoped
-     * to the agent built by this `MWSuperTest` instance. The signature is
-     * deliberately a `NextHandleFunction` (Node `IncomingMessage` /
-     * `ServerResponse`) — see `NextHandleFunction` for why Express extension
-     * methods are not available at this point.
+     * to the agent built by this `MWSuperTest` instance.
      */
-    use(mw: NextHandleFunction): this
+    use(mw: RequestHandler): this
 
     /**
      * Registers a server-side check that runs against the response body

@@ -1,6 +1,6 @@
 // middleware-supertest.ts
 
-import type {Express, Request, Response} from "express"
+import type {Express, Request, RequestHandler, Response} from "express"
 import {responseHandler} from "express-intercept"
 import type * as types from "middleware-supertest"
 import type {IncomingMessage, ServerResponse} from "node:http"
@@ -15,7 +15,7 @@ export const mwsupertest: typeof types.mwsupertest = app => new MWSuperTest(app)
 
 class MWSuperTest implements types.MWSuperTest {
     private _agent: supertest.Agent
-    private chain: types.NextHandleFunction[] = []
+    private chain: RequestHandler[] = []
     private readonly app: Express
 
     constructor(app: Express) {
@@ -31,27 +31,18 @@ class MWSuperTest implements types.MWSuperTest {
         // so that the runtime contract is just "any callable Express app",
         // which both Express 4 and Express 5 satisfy. The version of Express
         // used by the consumer never enters this module at runtime.
-        const stack: types.NextHandleFunction[] = [...this.chain, this.app as unknown as types.NextHandleFunction]
-        // The chain runs handlers against the raw Node objects supertest
-        // hands us via `http.createServer`. The consumer's Express app —
-        // running as the last entry of the stack — is the one that
-        // decorates `req` / `res` with the Express prototype in place,
-        // which is why the `getRequest()` / `getResponse()` checkers see
-        // Express-extended objects even though the chain itself is typed
-        // against the raw `IncomingMessage` / `ServerResponse`.
         const composed = (req: IncomingMessage, res: ServerResponse) => {
-            runChain(stack, req, res, (err?: any) => {
+            runChain(this.chain, req as Request, res as Response, (err?: any) => {
                 // Fallback when neither the chain nor the app produced a
                 // response. This mirrors the minimal behaviour of the
                 // `finalhandler` package that Express attaches when you call
                 // `app.listen()` (404 for unhandled, 500 for surfaced errors).
-                if (res.headersSent) return
                 if (err) {
+                    if (res.headersSent) return
                     res.statusCode = (err && err.status) || 500
                     res.end((err && err.message) || "Internal Server Error")
                 } else {
-                    res.statusCode = 404
-                    res.end("Not Found")
+                    this.app(req, res)
                 }
             })
         }
@@ -59,7 +50,7 @@ class MWSuperTest implements types.MWSuperTest {
         return (this._agent = supertest(composed))
     }
 
-    use(mw: types.NextHandleFunction): this {
+    use(mw: RequestHandler): this {
         this.chain.push(mw)
         this._agent = null
         return this
@@ -72,7 +63,7 @@ class MWSuperTest implements types.MWSuperTest {
     getString(checker: (str: string) => (any | Promise<any>)): this {
         return this.use(responseHandler().getString((str, req, res) => {
             return Promise.resolve(str).then(checker).catch(err => catchError(err, req, res))
-        }) as unknown as types.NextHandleFunction)
+        }))
     }
 
     /**
@@ -82,7 +73,7 @@ class MWSuperTest implements types.MWSuperTest {
     getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve(buf).then(checker).catch(err => catchError(err, req, res))
-        }) as unknown as types.NextHandleFunction)
+        }))
     }
 
     /**
@@ -92,7 +83,7 @@ class MWSuperTest implements types.MWSuperTest {
     getRequest(checker: (req: Request) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(req)).catch(err => catchError(err, req, res))
-        }) as unknown as types.NextHandleFunction)
+        }))
     }
 
     /**
@@ -102,7 +93,7 @@ class MWSuperTest implements types.MWSuperTest {
     getResponse(checker: (res: Response) => (any | Promise<any>)): this {
         return this.use(responseHandler().getBuffer((buf, req, res) => {
             return Promise.resolve().then(() => checker(res)).catch(err => catchError(err, req, res))
-        }) as unknown as types.NextHandleFunction)
+        }))
     }
 
     /**
@@ -156,7 +147,7 @@ class MWSuperTest implements types.MWSuperTest {
  * This re-implements the slice of `express.Router()` semantics that mws
  * actually relies on (sequential `.use()` chaining, no path-prefix matching,
  * no 4-arg error handlers, no nested routers). Anything richer than that is
- * the consumer's own app, which we run as the last entry of the stack.
+ * the consumer's own app, which we call after this chain completes.
  *
  * Synchronous exceptions from a handler are caught and surfaced through
  * `next()`, mirroring Express's `Layer.handle_request` so that a thrown
@@ -164,7 +155,7 @@ class MWSuperTest implements types.MWSuperTest {
  * Node's request listener and aborting the test run.
  */
 
-function runChain(handlers: types.NextHandleFunction[], req: IncomingMessage, res: ServerResponse, done: (err?: any) => void): void {
+function runChain(handlers: RequestHandler[], req: Request, res: Response, done: (err?: any) => void): void {
     let i = 0
     const step = (err?: any) => {
         if (err) return done(err)
