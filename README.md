@@ -1,6 +1,6 @@
 # middleware-supertest
 
-[![Node.js CI](https://github.com/kawanet/middleware-supertest/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/kawanet/middleware-supertest/actions/)
+[![Node.js CI](https://github.com/kawanet/middleware-supertest/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/kawanet/middleware-supertest/actions/)
 [![npm version](https://img.shields.io/npm/v/middleware-supertest)](https://www.npmjs.com/package/middleware-supertest)
 
 Test an Express.js `RequestHandler` middleware on both the server side and the client side in a single chain.
@@ -47,7 +47,7 @@ describe("mwsupertest", async () => {
 ## METHODS
 
 See the TypeScript declaration
-[middleware-supertest.d.ts](https://github.com/kawanet/middleware-supertest/blob/master/types/middleware-supertest.d.ts)
+[middleware-supertest.d.ts](https://github.com/kawanet/middleware-supertest/blob/main/types/middleware-supertest.d.ts)
 for full details.
 
 ## SEE ALSO
