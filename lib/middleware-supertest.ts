@@ -14,6 +14,10 @@ export const mwsupertest: typeof types.mwsupertest = app => new MWSuperTest(app)
  */
 
 class MWSuperTest implements types.MWSuperTest {
+    // express-intercept declares req/res optional on its callbacks, for
+    // callers that ignore them. Every handler below runs inside a response
+    // cycle, so both are always present.
+
     private _agent?: supertest.Agent
     private chain: RequestHandler[] = []
     private readonly app: Express
@@ -64,7 +68,7 @@ class MWSuperTest implements types.MWSuperTest {
 
     getString(checker: (str: string) => (any | Promise<any>)): this {
         return this.add(responseHandler().getString((str, req, res) => {
-            return Promise.resolve(str).then(checker).catch(err => catchError(err, req, res))
+            return Promise.resolve(str).then(checker).catch(err => catchError(err, req!, res!))
         }))
     }
 
@@ -74,7 +78,7 @@ class MWSuperTest implements types.MWSuperTest {
 
     getBuffer(checker: (buf: Buffer) => (any | Promise<any>)): this {
         return this.add(responseHandler().getBuffer((buf, req, res) => {
-            return Promise.resolve(buf).then(checker).catch(err => catchError(err, req, res))
+            return Promise.resolve(buf).then(checker).catch(err => catchError(err, req!, res!))
         }))
     }
 
@@ -84,7 +88,7 @@ class MWSuperTest implements types.MWSuperTest {
 
     getRequest(checker: (req: Request) => (any | Promise<any>)): this {
         return this.add(responseHandler().getBuffer((buf, req, res) => {
-            return Promise.resolve().then(() => checker(req)).catch(err => catchError(err, req, res))
+            return Promise.resolve().then(() => checker(req!)).catch(err => catchError(err, req!, res!))
         }))
     }
 
@@ -94,7 +98,7 @@ class MWSuperTest implements types.MWSuperTest {
 
     getResponse(checker: (res: Response) => (any | Promise<any>)): this {
         return this.add(responseHandler().getBuffer((buf, req, res) => {
-            return Promise.resolve().then(() => checker(res)).catch(err => catchError(err, req, res))
+            return Promise.resolve().then(() => checker(res!)).catch(err => catchError(err, req!, res!))
         }))
     }
 
