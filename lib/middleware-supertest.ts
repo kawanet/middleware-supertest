@@ -168,7 +168,7 @@ function runChain(handlers: RequestHandler[], req: Request, res: Response, done:
         if (err) return done(err)
         if (i >= handlers.length) return done()
         try {
-            handlers[i++](req, res, step)
+            handlers[i++]!(req, res, step)
         } catch (e) {
             step(e)
         }
