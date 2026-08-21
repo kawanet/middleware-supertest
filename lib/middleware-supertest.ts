@@ -18,7 +18,8 @@ class MWSuperTest implements types.MWSuperTest {
     // callers that ignore them. Every handler below runs inside a response
     // cycle, so both are always present.
 
-    private _agent?: supertest.Agent
+    // Assigned undefined to invalidate the cache, so the type has to say so.
+    private _agent?: supertest.Agent | undefined
     private chain: RequestHandler[] = []
     private readonly app: Express
 
