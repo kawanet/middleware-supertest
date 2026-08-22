@@ -6,6 +6,7 @@
 .idea/
 .vscode/
 build/
+builder/tests/
 dist/
 lib/**/*.js
 node_modules/
