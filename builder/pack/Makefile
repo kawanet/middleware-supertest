@@ -2,6 +2,9 @@
 SHELL := bash
 .SHELLFLAGS := -eo pipefail -c
 
+# A target name in builder/, not a path from here.
+TESTS_DST := ./tests/bundled.mjs
+
 # The workflows drive these steps in order:
 #   nodejs.yml   pack bundled unpack test
 #   publish.yml  bundled test-dist
@@ -17,15 +20,15 @@ pack: clean
 	mv *-*.*.*.tgz packed.tgz
 
 bundled:
-	$(MAKE) -C .. tests/bundled.mjs
+	$(MAKE) -C .. $(TESTS_DST)
 
 # The lane has no manifest, so the test-only peers the suites need come
 # from builder/pack/package.json. It names no package and declares no
 # exports, which is what keeps a self-reference from beating node_modules.
 # A checkout has its own manifest and keeps it.
 unpack:
-	cd ../.. && [ -e package.json ] || cp builder/pack/package.json package.json
-	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save
+	[ -e ../../package.json ] || cp package.json ../../
+	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save --engine-strict
 
 test: test-bundled
 
